@@ -425,26 +425,34 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 	// Slices: first compact-encode length, then each item individually
 	case reflect.Slice:
 		codedLen64, _ := pd.DecodeUintCompact()
-		if codedLen64.Int64() > math.MaxUint32 {
+		codeLenFirst := math.MaxUint32
+		codeLenRight := uint32(0)
+		if codedLen64.Uint64() > math.MaxUint32 {
 			err := errors.New("Encoded array length is higher than allowed by the protocol (32-bit unsigned integer)")
 			fmt.Println(err)
+			codeLenRight = uint32(codedLen64.Uint64() - math.MaxUint32)
+			fmt.Println(codeLenFirst, codeLenRight)
 		}
-		if codedLen64.Int64() > math.MaxUint64 {
+		if codedLen64.Uint64() > math.MaxUint64 {
 			return errors.New("Encoded array length is higher than allowed by the protocol (32-bit unsigned integer)")
 		}
 		//if codedLen64.Uint64() > uint64(maxInt) {
 		//	return errors.New("Encoded array length is higher than allowed by the platform")
 		//}
-		codedLen := int(codedLen64.Int64())
+		codedLen := int(codedLen64.Uint64())
 		targetLen := target.Len()
 		if codedLen != targetLen {
-			if int(codedLen) > target.Cap() || codedLen64.Int64() < math.MaxUint32 {
+			if codedLen64.Uint64() > math.MaxUint32 {
+				newSlice := reflect.MakeSlice(t, math.MaxInt, math.MaxInt)
+				target.Set(newSlice)
+			} else if codedLen > target.Cap() {
 				newSlice := reflect.MakeSlice(t, int(codedLen), int(codedLen))
 				target.Set(newSlice)
 			} else {
 				target.SetLen(int(codedLen))
 			}
 		}
+
 		for i := 0; i < codedLen; i++ {
 			err := pd.DecodeIntoReflectValue(target.Index(i))
 			if err != nil {
