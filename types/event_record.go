@@ -512,7 +512,6 @@ func (e EventRecordsRaw) DecodeEventRecords(m *Metadata, t interface{}) error { 
 	log.Debug(fmt.Sprintf("found %v events", n))
 
 	// iterate over events
-outer:
 	for i := uint64(0); i < n.Uint64(); i++ {
 		log.Debug(fmt.Sprintf("decoding event #%v", i))
 
@@ -536,9 +535,9 @@ outer:
 		moduleName, eventName, err := m.FindEventNamesForEventID(id)
 		// moduleName, eventName, err := "System", "ExtrinsicSuccess", nil
 		if err != nil {
-			fmt.Errorf("unable to find event with EventID %v in metadata for event #%v: %s", id, i, err)
-			continue outer
-			//return fmt.Errorf("unable to find event with EventID %v in metadata for event #%v: %s", id, i, err)
+			//fmt.Errorf("unable to find event with EventID %v in metadata for event #%v: %s", id, i, err)
+			//continue outer
+			return fmt.Errorf("unable to find event with EventID %v in metadata for event #%v: %s", id, i, err)
 		}
 
 		log.Debug(fmt.Sprintf("event #%v is in module %v with event name %v", i, moduleName, eventName))
@@ -546,9 +545,9 @@ outer:
 		// check whether name for eventID exists in t
 		field := val.FieldByName(fmt.Sprintf("%v_%v", moduleName, eventName))
 		if !field.IsValid() {
-			fmt.Errorf("unable to find field %v_%v for event #%v with EventID %v", moduleName, eventName, i, id)
-			continue outer
-			//return fmt.Errorf("unable to find field %v_%v for event #%v with EventID %v", moduleName, eventName, i, id)
+			//fmt.Errorf("unable to find field %v_%v for event #%v with EventID %v", moduleName, eventName, i, id)
+			//continue outer
+			return fmt.Errorf("unable to find field %v_%v for event #%v with EventID %v", moduleName, eventName, i, id)
 		}
 
 		// create a pointer to with the correct type that will hold the decoded event
@@ -578,11 +577,11 @@ outer:
 		for j := 1; j < numFields; j++ {
 			err = decoder.Decode(holder.Elem().FieldByIndex([]int{j}).Addr().Interface())
 			if err != nil {
-				fmt.Errorf("unable to decode field %v event #%v with EventID %v, field %v_%v: %v", j, i, id, moduleName,
-					eventName, err)
-				continue outer
-				//return fmt.Errorf("unable to decode field %v event #%v with EventID %v, field %v_%v: %v", j, i, id, moduleName,
+				//fmt.Errorf("unable to decode field %v event #%v with EventID %v, field %v_%v: %v", j, i, id, moduleName,
 				//	eventName, err)
+				//continue outer
+				return fmt.Errorf("unable to decode field %v event #%v with EventID %v, field %v_%v: %v", j, i, id, moduleName,
+					eventName, err)
 			}
 		}
 
