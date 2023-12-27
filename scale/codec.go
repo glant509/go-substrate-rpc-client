@@ -442,7 +442,8 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 		//}
 		codedLen := int(codedLen64.Uint64())
 		targetLen := target.Len()
-		if codedLen != targetLen {
+		if codedLen64.Uint64() > math.MaxUint32 {
+		} else if codedLen != targetLen {
 			if codedLen > target.Cap() {
 				newSlice := reflect.MakeSlice(t, int(codedLen), int(codedLen))
 				target.Set(newSlice)
@@ -451,10 +452,19 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 			}
 		}
 
-		for i := 0; i < codedLen; i++ {
-			err := pd.DecodeIntoReflectValue(target.Index(i))
-			if err != nil {
-				return err
+		if codedLen64.Uint64() > math.MaxUint32 {
+			for i := uint64(0); i < codedLen64.Uint64(); i++ {
+				err := pd.DecodeIntoReflectValue(target.Index(0))
+				if err != nil {
+					return err
+				}
+			}
+		} else {
+			for i := 0; i < codedLen; i++ {
+				err := pd.DecodeIntoReflectValue(target.Index(i))
+				if err != nil {
+					return err
+				}
 			}
 		}
 
