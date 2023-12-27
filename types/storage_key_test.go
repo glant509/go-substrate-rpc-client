@@ -22,11 +22,11 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/centrifuge/go-substrate-rpc-client/v4/hash"
-	. "github.com/centrifuge/go-substrate-rpc-client/v4/types"
-	. "github.com/centrifuge/go-substrate-rpc-client/v4/types/codec"
-	. "github.com/centrifuge/go-substrate-rpc-client/v4/types/test_utils"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/xxhash"
+	"github.com/glant509/go-substrate-rpc-client/v4/hash"
+	. "github.com/glant509/go-substrate-rpc-client/v4/types"
+	. "github.com/glant509/go-substrate-rpc-client/v4/types/codec"
+	. "github.com/glant509/go-substrate-rpc-client/v4/types/test_utils"
+	"github.com/glant509/go-substrate-rpc-client/v4/xxhash"
 	"github.com/stretchr/testify/assert"
 )
 

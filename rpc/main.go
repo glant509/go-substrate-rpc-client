@@ -17,15 +17,15 @@
 package rpc
 
 import (
-	"github.com/centrifuge/go-substrate-rpc-client/v4/client"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/rpc/author"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/rpc/beefy"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/rpc/chain"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/rpc/mmr"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/rpc/offchain"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/rpc/state"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/rpc/system"
-	"github.com/centrifuge/go-substrate-rpc-client/v4/types"
+	"github.com/glant509/go-substrate-rpc-client/v4/client"
+	"github.com/glant509/go-substrate-rpc-client/v4/rpc/author"
+	"github.com/glant509/go-substrate-rpc-client/v4/rpc/beefy"
+	"github.com/glant509/go-substrate-rpc-client/v4/rpc/chain"
+	"github.com/glant509/go-substrate-rpc-client/v4/rpc/mmr"
+	"github.com/glant509/go-substrate-rpc-client/v4/rpc/offchain"
+	"github.com/glant509/go-substrate-rpc-client/v4/rpc/state"
+	"github.com/glant509/go-substrate-rpc-client/v4/rpc/system"
+	"github.com/glant509/go-substrate-rpc-client/v4/types"
 )
 
 type RPC struct {

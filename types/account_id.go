@@ -22,8 +22,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/centrifuge/go-substrate-rpc-client/v4/scale"
 	"github.com/ethereum/go-ethereum/common/hexutil"
+	"github.com/glant509/go-substrate-rpc-client/v4/scale"
 )
 
 type OptionAccountID struct {

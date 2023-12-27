@@ -16,7 +16,7 @@
 
 package types
 
-import "github.com/centrifuge/go-substrate-rpc-client/v4/scale"
+import "github.com/glant509/go-substrate-rpc-client/v4/scale"
 
 type ModuleError struct {
 	Index U8
