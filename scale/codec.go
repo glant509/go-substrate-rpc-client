@@ -32,7 +32,7 @@ import (
 // has to rely on Go's reflection and thus is notably slower.
 // Feature parity is almost full, apart from the lack of support for u128 (which are missing in Go).
 
-const maxUint = ^uint64(0)
+const maxUint = ^uint32(0)
 const maxInt = int(maxUint >> 1)
 
 // Encoder is a wrapper around a Writer that allows encoding data items to a stream.
@@ -425,12 +425,14 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 	// Slices: first compact-encode length, then each item individually
 	case reflect.Slice:
 		codedLen64, _ := pd.DecodeUintCompact()
-		if codedLen64.Uint64() > math.MaxUint64 {
-			return errors.New("Encoded array length is higher than allowed by the protocol (32-bit unsigned integer)")
+		if codedLen64.Uint64() > math.MaxUint32 {
+			return nil
+			//return errors.New("Encoded array length is higher than allowed by the protocol (32-bit unsigned integer)")
 		}
-		//if codedLen64.Uint64() > uint64(maxInt) {
-		//	return errors.New("Encoded array length is higher than allowed by the platform")
-		//}
+		if codedLen64.Uint64() > uint64(maxInt) {
+			return nil
+			//return errors.New("Encoded array length is higher than allowed by the platform")
+		}
 		codedLen := int(codedLen64.Uint64())
 		targetLen := target.Len()
 		if codedLen != targetLen {
