@@ -426,11 +426,15 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 	case reflect.Slice:
 		codedLen64, _ := pd.DecodeUintCompact()
 		if codedLen64.Uint64() > math.MaxUint32 {
+			err := errors.New("Encoded array length is higher than allowed by the protocol (32-bit unsigned integer)")
+			fmt.Println(err)
+		}
+		if codedLen64.Uint64() > math.MaxUint64 {
 			return errors.New("Encoded array length is higher than allowed by the protocol (32-bit unsigned integer)")
 		}
-		if codedLen64.Uint64() > uint64(maxInt) {
-			return errors.New("Encoded array length is higher than allowed by the platform")
-		}
+		//if codedLen64.Uint64() > uint64(maxInt) {
+		//	return errors.New("Encoded array length is higher than allowed by the platform")
+		//}
 		codedLen := int(codedLen64.Uint64())
 		targetLen := target.Len()
 		if codedLen != targetLen {
