@@ -7,7 +7,6 @@ require (
 	github.com/davecgh/go-spew v1.1.1
 	github.com/deckarep/golang-set v1.8.0
 	github.com/ethereum/go-ethereum v1.10.25
-	github.com/glant509/go-subkey/v2 v2.0.0-20231227033040-042c2b75a46f
 	github.com/google/gofuzz v1.1.1-0.20200604201612-c04b05f3adfa
 	github.com/gorilla/websocket v1.5.0
 	github.com/pierrec/xxHash v0.1.5
