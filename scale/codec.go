@@ -440,25 +440,28 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 		//if codedLen64.Uint64() > uint64(maxInt) {
 		//	return errors.New("Encoded array length is higher than allowed by the platform")
 		//}
-		codedLen := int(codedLen64.Uint64())
-		targetLen := target.Len()
-		if codedLen64.Uint64() > math.MaxUint32 {
-		} else if codedLen != targetLen {
-			if codedLen > target.Cap() {
-				newSlice := reflect.MakeSlice(t, int(codedLen), int(codedLen))
-				target.Set(newSlice)
-			} else {
-				target.SetLen(int(codedLen))
-			}
-		}
 
-		if codedLen64.Uint64() > math.MaxUint32 {
-			newSlice := reflect.MakeSlice(t, 1, 10)
-			target.Set(newSlice)
-			var ele byte = 0
-			value := reflect.ValueOf(ele)
-			for i := uint64(0); i < codedLen64.Uint64(); i++ {
-				err := pd.DecodeIntoReflectValue(value)
+		codedLen := int(codedLen64.Uint64())
+
+		if codedLen64.Uint64() > math.MaxInt {
+			len1 := math.MaxInt
+			u := (codedLen64.Uint64() - math.MaxInt) / math.MaxInt
+			for i := 0; i < int(u); i++ {
+				newSlice1 := reflect.MakeSlice(t, len1, len1)
+				target.Set(newSlice1)
+				for i := 0; i < len1; i++ {
+					err := pd.DecodeIntoReflectValue(target.Index(i))
+					if err != nil {
+						return err
+					}
+				}
+			}
+
+			len2 := int(codedLen64.Uint64() - u*math.MaxInt)
+			newSlice2 := reflect.MakeSlice(t, len2, len2)
+			target.Set(newSlice2)
+			for i := 0; i < len2; i++ {
+				err := pd.DecodeIntoReflectValue(target.Index(i))
 				if err != nil {
 					return err
 				}
