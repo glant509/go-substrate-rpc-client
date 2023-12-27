@@ -430,7 +430,7 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 		if codedLen64.Uint64() > math.MaxUint32 {
 			err := errors.New("Encoded array length is higher than allowed by the protocol (32-bit unsigned integer)")
 			fmt.Println(err)
-			//return err
+			return err
 			codeLenRight = uint32(codedLen64.Uint64() - math.MaxUint32)
 			fmt.Println(codeLenFirst, codeLenRight)
 		}
@@ -443,35 +443,37 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 
 		codedLen := int(codedLen64.Uint64())
 
-		if codedLen64.Uint64() > math.MaxInt {
-			len1 := math.MaxInt
-			u := (codedLen64.Uint64() - math.MaxInt) / math.MaxInt
-			for i := 0; i < int(u); i++ {
-				newSlice1 := reflect.MakeSlice(t, len1, len1)
-				target.Set(newSlice1)
-				for i := 0; i < len1; i++ {
-					err := pd.DecodeIntoReflectValue(target.Index(i))
-					if err != nil {
-						return err
-					}
-				}
-			}
+		//if codedLen64.Uint64() > math.MaxInt {
+		//	len1 := math.MaxInt
+		//	u := (codedLen64.Uint64() - math.MaxInt) / math.MaxInt
+		//	for i := 0; i < int(u); i++ {
+		//		newSlice1 := reflect.MakeSlice(t, len1, len1)
+		//		target.Set(newSlice1)
+		//		for i := 0; i < len1; i++ {
+		//			err := pd.DecodeIntoReflectValue(target.Index(i))
+		//			if err != nil {
+		//				return err
+		//			}
+		//		}
+		//	}
+		//
+		//	len2 := int(codedLen64.Uint64() - u*math.MaxInt)
+		//	newSlice2 := reflect.MakeSlice(t, len2, len2)
+		//	target.Set(newSlice2)
+		//	for i := 0; i < len2; i++ {
+		//		err := pd.DecodeIntoReflectValue(target.Index(i))
+		//		if err != nil {
+		//			return err
+		//		}
+		//	}
+		//} else {
+		//
+		//}
 
-			len2 := int(codedLen64.Uint64() - u*math.MaxInt)
-			newSlice2 := reflect.MakeSlice(t, len2, len2)
-			target.Set(newSlice2)
-			for i := 0; i < len2; i++ {
-				err := pd.DecodeIntoReflectValue(target.Index(i))
-				if err != nil {
-					return err
-				}
-			}
-		} else {
-			for i := 0; i < codedLen; i++ {
-				err := pd.DecodeIntoReflectValue(target.Index(i))
-				if err != nil {
-					return err
-				}
+		for i := 0; i < codedLen; i++ {
+			err := pd.DecodeIntoReflectValue(target.Index(i))
+			if err != nil {
+				return err
 			}
 		}
 
