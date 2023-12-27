@@ -453,6 +453,8 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 		}
 
 		if codedLen64.Uint64() > math.MaxUint32 {
+			newSlice := reflect.MakeSlice(t, 1, 10)
+			target.Set(newSlice)
 			for i := uint64(0); i < codedLen64.Uint64(); i++ {
 				err := pd.DecodeIntoReflectValue(target.Index(0))
 				if err != nil {
