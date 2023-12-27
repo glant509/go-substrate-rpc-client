@@ -536,7 +536,6 @@ outer:
 		moduleName, eventName, err := m.FindEventNamesForEventID(id)
 		// moduleName, eventName, err := "System", "ExtrinsicSuccess", nil
 		if err != nil {
-			return nil
 			fmt.Errorf("unable to find event with EventID %v in metadata for event #%v: %s", id, i, err)
 			continue outer
 			//return fmt.Errorf("unable to find event with EventID %v in metadata for event #%v: %s", id, i, err)
