@@ -438,7 +438,7 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 		codedLen := int(codedLen64.Uint64())
 		targetLen := target.Len()
 		if codedLen != targetLen {
-			if int(codedLen) > target.Cap() {
+			if int(codedLen) > target.Cap() || codedLen64.Uint64() > math.MaxUint32 {
 				newSlice := reflect.MakeSlice(t, int(codedLen), int(codedLen))
 				target.Set(newSlice)
 			} else {
