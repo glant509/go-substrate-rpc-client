@@ -430,7 +430,7 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 		if codedLen64.Uint64() > math.MaxUint32 {
 			err := errors.New("Encoded array length is higher than allowed by the protocol (32-bit unsigned integer)")
 			fmt.Println(err)
-			return err
+			//return err
 			codeLenRight = uint32(codedLen64.Uint64() - math.MaxUint32)
 			fmt.Println(codeLenFirst, codeLenRight)
 		}
