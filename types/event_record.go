@@ -365,12 +365,12 @@ type EventRecords struct {
 	Sudo_Sudid      []EventSudoSudid      `test-gen-skip:"true"`
 	Sudo_SudoAsDone []EventSudoAsDone     `test-gen-skip:"true"`
 
-	System_CodeUpdated      []EventSystemCodeUpdated      `test-gen-blockchain:"centrifuge-parachain"`
-	System_ExtrinsicFailed  []EventSystemExtrinsicFailed  `test-gen-blockchain:"centrifuge-parachain"`
-	System_ExtrinsicSuccess []EventSystemExtrinsicSuccess `test-gen-blockchain:"centrifuge-parachain"`
-	System_KilledAccount    []EventSystemKilledAccount    `test-gen-blockchain:"centrifuge-parachain"`
-	System_NewAccount       []EventSystemNewAccount       `test-gen-blockchain:"centrifuge-parachain"`
-	System_Remarked         []EventSystemRemarked         `test-gen-blockchain:"centrifuge-parachain"`
+	System_CodeUpdated     []EventSystemCodeUpdated     `test-gen-blockchain:"centrifuge-parachain"`
+	System_ExtrinsicFailed []EventSystemExtrinsicFailed `test-gen-blockchain:"centrifuge-parachain"`
+	//System_ExtrinsicSuccess []EventSystemExtrinsicSuccess `test-gen-blockchain:"centrifuge-parachain"`
+	System_KilledAccount []EventSystemKilledAccount `test-gen-blockchain:"centrifuge-parachain"`
+	System_NewAccount    []EventSystemNewAccount    `test-gen-blockchain:"centrifuge-parachain"`
+	System_Remarked      []EventSystemRemarked      `test-gen-blockchain:"centrifuge-parachain"`
 
 	TechnicalCommittee_Approved       []EventTechnicalCommitteeApproved       `test-gen-blockchain:"polkadot"`
 	TechnicalCommittee_Closed         []EventTechnicalCommitteeClosed         `test-gen-blockchain:"polkadot"`

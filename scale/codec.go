@@ -452,37 +452,35 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 			}
 		}
 
-		//if codedLen64.Uint64() > math.MaxInt {
-		//	len1 := math.MaxInt
-		//	u := (codedLen64.Uint64() - math.MaxInt) / math.MaxInt
-		//	for i := 0; i < int(u); i++ {
-		//		newSlice1 := reflect.MakeSlice(t, len1, len1)
-		//		target.Set(newSlice1)
-		//		for i := 0; i < len1; i++ {
-		//			err := pd.DecodeIntoReflectValue(target.Index(i))
-		//			if err != nil {
-		//				return err
-		//			}
-		//		}
-		//	}
-		//
-		//	len2 := int(codedLen64.Uint64() - u*math.MaxInt)
-		//	newSlice2 := reflect.MakeSlice(t, len2, len2)
-		//	target.Set(newSlice2)
-		//	for i := 0; i < len2; i++ {
-		//		err := pd.DecodeIntoReflectValue(target.Index(i))
-		//		if err != nil {
-		//			return err
-		//		}
-		//	}
-		//} else {
-		//
-		//}
+		if codedLen64.Uint64() > math.MaxUint32 {
+			len1 := math.MaxUint32
+			u := (codedLen64.Uint64() - math.MaxUint32) / math.MaxUint32
+			for i := 0; i < int(u); i++ {
+				newSlice1 := reflect.MakeSlice(t, len1, len1)
+				target.Set(newSlice1)
+				for i := 0; i < len1; i++ {
+					err := pd.DecodeIntoReflectValue(target.Index(i))
+					if err != nil {
+						return err
+					}
+				}
+			}
 
-		for i := 0; i < codedLen; i++ {
-			err := pd.DecodeIntoReflectValue(target.Index(i))
-			if err != nil {
-				return err
+			len2 := int(codedLen64.Uint64() - u*math.MaxUint32)
+			newSlice2 := reflect.MakeSlice(t, len2, len2)
+			target.Set(newSlice2)
+			for i := 0; i < len2; i++ {
+				err := pd.DecodeIntoReflectValue(target.Index(i))
+				if err != nil {
+					return err
+				}
+			}
+		} else {
+			for i := 0; i < codedLen; i++ {
+				err := pd.DecodeIntoReflectValue(target.Index(i))
+				if err != nil {
+					return err
+				}
 			}
 		}
 
