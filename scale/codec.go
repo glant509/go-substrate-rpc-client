@@ -443,12 +443,14 @@ func (pd Decoder) DecodeIntoReflectValue(target reflect.Value) error {
 
 		codedLen := int(codedLen64.Uint64())
 		targetLen := target.Len()
-		if codedLen != targetLen {
-			if int(codedLen) > target.Cap() {
-				newSlice := reflect.MakeSlice(t, int(codedLen), int(codedLen))
-				target.Set(newSlice)
-			} else {
-				target.SetLen(int(codedLen))
+		if codedLen64.Uint64() < math.MaxUint32 {
+			if codedLen != targetLen {
+				if int(codedLen) > target.Cap() {
+					newSlice := reflect.MakeSlice(t, int(codedLen), int(codedLen))
+					target.Set(newSlice)
+				} else {
+					target.SetLen(int(codedLen))
+				}
 			}
 		}
 
